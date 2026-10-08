@@ -1,122 +1,174 @@
 {
-  "_comment": "StarTruckMP egg NO-SSL v1.8.0 - package unified. HTTP uniquement, aucun certificat. Binaire autonome: aucun runtime a installer.",
-  "meta": {
-    "version": "PTDL_v2",
-    "update_url": null
-  },
-  "exported_at": "2026-10-05T00:00:00+02:00",
-  "name": "StarTruckMP No-SSL",
-  "author": "admin@example.com",
-  "description": "Serveur multijoueur Star Trucker (StarTruckMP Enhanced 1.8.0 no-SSL, protocole 3). HTTP uniquement, port unique 7777 TCP+UDP.",
-  "features": null,
-  "docker_images": {
-    "Debian (.NET runtime-deps)": "ghcr.io/parkervcp/yolks:debian"
-  },
-  "file_denylist": [],
-  "startup": "./StarTruckMP.Server --data-dir ./data",
-  "config": {
-    "files": "{}",
-    "startup": "{\"done\": \"Server started on port\"}",
-    "logs": "{}",
-    "stop": "^C"
-  },
-  "scripts": {
-    "installation": {
-      "script": "#!/bin/bash\nset -e\n# StarTruckMP 1.8.0 no-SSL - install Pterodactyl\n# Binaire AUTONOME (self-contained) : aucun runtime .NET a installer.\n# Contenu de linux-nossl/ via SFTP, ou telechargement auto depuis GitHub (DOWNLOAD_URL).\napt-get update -qq\napt-get install -y -qq curl unzip tar ca-certificates >/dev/null\ncd /mnt/server\nif [ -n \"$DOWNLOAD_URL\" ]; then\n  echo \"Telechargement $DOWNLOAD_URL ...\"\n  curl -fsSL \"$DOWNLOAD_URL\" -o /tmp/srv\n  (unzip -o /tmp/srv -d /mnt/server || tar xzf /tmp/srv -C /mnt/server)\n  rm -f /tmp/srv\nfi\nchmod +x /mnt/server/StarTruckMP.Server 2>/dev/null || true\nmkdir -p /mnt/server/data\necho 'Installation terminee (no-SSL, HTTP)'",
-      "container": "debian:bookworm-slim",
-      "entrypoint": "bash"
-    }
-  },
-  "variables": [
-    {
-      "name": "Nom du serveur",
-      "description": "Affiché aux joueurs",
-      "env_variable": "STARTRUCK_SERVER_NAME",
-      "default_value": "Mon serveur StarTruckMP",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|string|max:64",
-      "field_type": "text"
-    },
-    {
-      "name": "Message d'accueil (MOTD)",
-      "description": "Texte affiché aux joueurs",
-      "env_variable": "STARTRUCK_MOTD",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string|max:256",
-      "field_type": "text"
-    },
-    {
-      "name": "Joueurs max",
-      "description": "Nombre maximum de joueurs",
-      "env_variable": "STARTRUCK_MAX_PLAYERS",
-      "default_value": "100",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|integer|between:1,1000",
-      "field_type": "text"
-    },
-    {
-      "name": "Port (optionnel)",
-      "description": "Vide = allocation du panel (SERVER_PORT). Renseignez pour forcer un autre port.",
-      "env_variable": "STARTRUCK_PORT",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|integer|between:1,65535",
-      "field_type": "text"
-    },
-    {
-      "name": "Nom de domaine public",
-      "description": "Domaine ou IP publique (informatif, affiché dans les logs)",
-      "env_variable": "STARTRUCK_PUBLIC_HOST",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string|max:255",
-      "field_type": "text"
-    },
-    {
-      "name": "Utilisateur admin",
-      "description": "Identifiant de la page /admin (http)",
-      "env_variable": "STARTRUCK_ADMIN_USER",
-      "default_value": "admin",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|string|max:32",
-      "field_type": "text"
-    },
-    {
-      "name": "Mot de passe admin",
-      "description": "Changez-le pour activer /admin (reste désactivé sur 'changeme')",
-      "env_variable": "STARTRUCK_ADMIN_PASSWORD",
-      "default_value": "changeme",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|string|min:6",
-      "field_type": "text"
-    },
-    {
-      "name": "Clé Steam Web API",
-      "description": "Recommandé : valide les connexions Steam (steamcommunity.com/dev/apikey)",
-      "env_variable": "STARTRUCK_STEAM_API_KEY",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string",
-      "field_type": "text"
-    },
-    {
-      "name": "URL de téléchargement",
-      "description": "Archive du serveur Linux no-SSL (zip). Remplacez GITHUB_USER par votre pseudo après upload.",
-      "env_variable": "DOWNLOAD_URL",
-      "default_value": "https://github.com/GITHUB_USER/StarTruckMP-NoSSL/releases/latest/download/linux-nossl.zip",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|url",
-      "field_type": "text"
-    }
-  ]
+    "_comment":  "StarTruckMP egg NO-SSL v1.8.0 - package unified. HTTP uniquement, aucun certificat. Binaire autonome: aucun runtime a installer.",
+    "meta":  {
+                 "version":  "PTDL_v2",
+                 "update_url":  null
+             },
+    "exported_at":  "2026-10-05T00:00:00+02:00",
+    "name":  "StarTruckMP No-SSL",
+    "author":  "admin@example.com",
+    "description":  "Serveur multijoueur Star Trucker (StarTruckMP Enhanced 1.8.0 no-SSL, protocole 3). HTTP uniquement, port unique 7777 TCP+UDP.",
+    "features":  null,
+    "docker_images":  {
+                          "Debian (.NET runtime-deps)":  "ghcr.io/parkervcp/yolks:debian"
+                      },
+    "file_denylist":  [
+
+                      ],
+    "startup":  "./StarTruckMP.Server --data-dir ./data",
+    "config":  {
+                   "files":  "{}",
+                   "startup":  "{\"done\": \"Server started on port\"}",
+                   "logs":  "{}",
+                   "stop":  "^C"
+               },
+    "scripts":  {
+                    "installation":  {
+                                         "script":  "#!/bin/bash\nset -e\n# StarTruckMP 1.8.0 no-SSL - install Pterodactyl\n# Binaire AUTONOME (self-contained) : aucun runtime .NET a installer.\n# Contenu de linux-nossl/ via SFTP, ou telechargement auto depuis GitHub (DOWNLOAD_URL).\napt-get update -qq\napt-get install -y -qq curl unzip tar ca-certificates \u003e/dev/null\ncd /mnt/server\nif [ -n \"$DOWNLOAD_URL\" ]; then\n  echo \"Telechargement $DOWNLOAD_URL ...\"\n  curl -fsSL \"$DOWNLOAD_URL\" -o /tmp/srv\n  (unzip -o /tmp/srv -d /mnt/server || tar xzf /tmp/srv -C /mnt/server)\n  rm -f /tmp/srv\nfi\nchmod +x /mnt/server/StarTruckMP.Server 2\u003e/dev/null || true\nmkdir -p /mnt/server/data\necho \u0027Installation terminee (no-SSL, HTTP)\u0027",
+                                         "container":  "debian:bookworm-slim",
+                                         "entrypoint":  "bash"
+                                     }
+                },
+    "variables":  [
+                      {
+                          "name":  "Nom du serveur",
+                          "description":  "Affiché aux joueurs",
+                          "env_variable":  "STARTRUCK_SERVER_NAME",
+                          "default_value":  "Mon serveur StarTruckMP",
+                          "user_viewable":  true,
+                          "user_editable":  true,
+                          "rules":  "required|string|max:64",
+                          "field_type":  "text"
+                      },
+                      {
+                          "name":  "Message d\u0027accueil (MOTD)",
+                          "description":  "Texte affiché aux joueurs",
+                          "env_variable":  "STARTRUCK_MOTD",
+                          "default_value":  "",
+                          "user_viewable":  true,
+                          "user_editable":  true,
+                          "rules":  "nullable|string|max:256",
+                          "field_type":  "text"
+                      },
+                      {
+                          "name":  "Joueurs max",
+                          "description":  "Nombre maximum de joueurs",
+                          "env_variable":  "STARTRUCK_MAX_PLAYERS",
+                          "default_value":  "100",
+                          "user_viewable":  true,
+                          "user_editable":  true,
+                          "rules":  "required|integer|between:1,1000",
+                          "field_type":  "text"
+                      },
+                      {
+                          "name":  "Port (optionnel)",
+                          "description":  "Vide = allocation du panel (SERVER_PORT). Renseignez pour forcer un autre port.",
+                          "env_variable":  "STARTRUCK_PORT",
+                          "default_value":  "",
+                          "user_viewable":  true,
+                          "user_editable":  true,
+                          "rules":  "nullable|integer|between:1,65535",
+                          "field_type":  "text"
+                      },
+                      {
+                          "name":  "Nom de domaine public",
+                          "description":  "Domaine ou IP publique (informatif, affiché dans les logs)",
+                          "env_variable":  "STARTRUCK_PUBLIC_HOST",
+                          "default_value":  "",
+                          "user_viewable":  true,
+                          "user_editable":  true,
+                          "rules":  "nullable|string|max:255",
+                          "field_type":  "text"
+                      },
+                      {
+                          "name":  "Utilisateur admin",
+                          "description":  "Identifiant de la page /admin (http)",
+                          "env_variable":  "STARTRUCK_ADMIN_USER",
+                          "default_value":  "admin",
+                          "user_viewable":  true,
+                          "user_editable":  true,
+                          "rules":  "required|string|max:32",
+                          "field_type":  "text"
+                      },
+                      {
+                          "name":  "Mot de passe admin",
+                          "description":  "Changez-le pour activer /admin (reste désactivé sur \u0027changeme\u0027)",
+                          "env_variable":  "STARTRUCK_ADMIN_PASSWORD",
+                          "default_value":  "changeme",
+                          "user_viewable":  true,
+                          "user_editable":  true,
+                          "rules":  "required|string|min:6",
+                          "field_type":  "text"
+                      },
+                      {
+                          "name":  "Clé Steam Web API",
+                          "description":  "Recommandé : valide les connexions Steam (steamcommunity.com/dev/apikey)",
+                          "env_variable":  "STARTRUCK_STEAM_API_KEY",
+                          "default_value":  "",
+                          "user_viewable":  true,
+                          "user_editable":  true,
+                          "rules":  "nullable|string",
+                          "field_type":  "text"
+                      },
+                      {
+                          "name":  "URL de téléchargement",
+                          "description":  "Archive du serveur Linux no-SSL (zip). Remplacez GITHUB_USER par votre pseudo après upload.",
+                          "env_variable":  "DOWNLOAD_URL",
+                          "default_value":  "https://github.com/GITHUB_USER/StarTruckMP-NoSSL/releases/latest/download/linux-nossl.zip",
+                          "user_viewable":  true,
+                          "user_editable":  true,
+                          "rules":  "nullable|url",
+                          "field_type":  "text"
+                      },
+                      {
+                          "default_value":  "127.0.0.1",
+                          "user_viewable":  true,
+                          "name":  "Database Host",
+                          "env_variable":  "DATABASE_HOST",
+                          "description":  "IP de la base de données",
+                          "user_editable":  true,
+                          "rules":  "required|string",
+                          "field_type":  "text"
+                      },
+                      {
+                          "default_value":  "3306",
+                          "user_viewable":  true,
+                          "name":  "Database Port",
+                          "env_variable":  "DATABASE_PORT",
+                          "description":  "Port de la base de données",
+                          "user_editable":  true,
+                          "rules":  "required|integer",
+                          "field_type":  "text"
+                      },
+                      {
+                          "default_value":  "s1_startruckmp",
+                          "user_viewable":  true,
+                          "name":  "Database Name",
+                          "env_variable":  "DATABASE_NAME",
+                          "description":  "Nom de la base de données",
+                          "user_editable":  true,
+                          "rules":  "required|string",
+                          "field_type":  "text"
+                      },
+                      {
+                          "default_value":  "u1_XXXXX",
+                          "user_viewable":  true,
+                          "name":  "Database User",
+                          "env_variable":  "DATABASE_USER",
+                          "description":  "Utilisateur MySQL",
+                          "user_editable":  true,
+                          "rules":  "required|string",
+                          "field_type":  "text"
+                      },
+                      {
+                          "default_value":  "",
+                          "user_viewable":  true,
+                          "name":  "Database Password",
+                          "env_variable":  "DATABASE_PASSWORD",
+                          "description":  "Mot de passe MySQL",
+                          "user_editable":  true,
+                          "rules":  "required|string",
+                          "field_type":  "text"
+                      }
+                  ]
 }
